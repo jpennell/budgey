@@ -26,7 +26,7 @@ public class CSVImporter<T extends CSVParser> {
 				String line = reader.readLine();
 				while (StringUtils.isNotBlank(line)) {
 					try {
-						final String[] fields = line.split(",");
+						final String[] fields = FieldSanitizer.sanitizeFields(line.split(","));
 						transactions.add(parser.parse(fields));
 					} catch (final Throwable t) {
 						System.out.println("Dropped line " + line);
@@ -39,4 +39,5 @@ public class CSVImporter<T extends CSVParser> {
 		}
 		return transactions;
 	}
+
 }
