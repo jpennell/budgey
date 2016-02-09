@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
  * Represents a transaction at a financial institution
  */
 public class Transaction {
-	private final AccountType type;
 	private final String accountNumber;
 	private final DateTime transactionDate;
 	private final Long chequeNumber;
@@ -18,7 +17,6 @@ public class Transaction {
 	private final Money usd;
 
 	private Transaction(Builder builder) {
-		type = builder.type;
 		accountNumber = builder.accountNumber;
 		transactionDate = builder.transactionDate;
 		chequeNumber = builder.chequeNumber;
@@ -26,14 +24,6 @@ public class Transaction {
 		description2 = builder.description2;
 		cad = builder.cad;
 		usd = builder.usd;
-	}
-
-	/**
-	 * @return the type of bank account that was updated by this transaction. <br/>
-	 *         TODO: this might be better suited as a property of an account, rather than of a transaction
-	 */
-	public AccountType getType() {
-		return type;
 	}
 
 	/**
@@ -103,7 +93,6 @@ public class Transaction {
 	}
 
 	public static class Builder {
-		private AccountType type;
 		private String accountNumber;
 		private DateTime transactionDate;
 		private Long chequeNumber;
@@ -111,14 +100,6 @@ public class Transaction {
 		private String description2;
 		private Money cad;
 		private Money usd;
-
-		/**
-		 * @param type the type of bank account that was updated by this transaction.
-		 */
-		public Builder setType(AccountType type) {
-			this.type = type;
-			return this;
-		}
 
 		/**
 		 * @param accountNumber the unique identifier of the account that was updated by this transaction

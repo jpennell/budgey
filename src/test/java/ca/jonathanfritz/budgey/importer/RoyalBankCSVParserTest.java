@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ca.jonathanfritz.budgey.AccountType;
 import ca.jonathanfritz.budgey.Transaction;
 import ca.jonathanfritz.budgey.util.ClasspathLoader;
 
@@ -29,11 +28,10 @@ public class RoyalBankCSVParserTest {
 		Assert.assertThat(transaction.getCad().getAmount().doubleValue(), IsEqual.equalTo(53.00D));
 		Assert.assertThat(transaction.getChequeNumber(), IsNull.nullValue());
 		Assert.assertThat(transaction.getTransactionDate(), IsEqual.equalTo((new DateTime())
-		        .withTimeAtStartOfDay()
-		        .withYear(2015)
-		        .withMonthOfYear(10)
-		        .withDayOfMonth(13)));
-		Assert.assertThat(transaction.getType(), IsEqual.equalTo(AccountType.CHECKING));
+				.withTimeAtStartOfDay()
+				.withYear(2015)
+				.withMonthOfYear(10)
+				.withDayOfMonth(13)));
 		Assert.assertThat(transaction.getUsd(), IsEqual.equalTo(Money.zero(CurrencyUnit.USD)));
 	}
 }
