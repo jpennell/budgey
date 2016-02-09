@@ -40,7 +40,7 @@ public class ImportCommand extends Command {
 				.dest(FILE_KEY)
 				.type(String.class)
 				.required(true)
-				.help("The transaction file to import. [file://path/to/file.csv]");
+				.help("The transaction file to import. [path/to/file.csv]");
 
 	}
 
