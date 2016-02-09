@@ -19,8 +19,8 @@ public class ScotiabankCSVParserTest {
 		final ScotiabankCSVParser parser = new ScotiabankCSVParser();
 		final Transaction transaction = parser.parse(fields);
 
-		Assert.assertThat(transaction.getDescription1(), IsEqual.equalTo("MOVATI ATHLETIC WATERLOO WATERLOO     ON"));
-		Assert.assertThat(transaction.getCad().getAmount().doubleValue(), IsEqual.equalTo(-508.50D));
+		Assert.assertThat(transaction.getDescription(), IsEqual.equalTo("MOVATI ATHLETIC WATERLOO WATERLOO     ON"));
+		Assert.assertThat(transaction.getAmount().getAmount().doubleValue(), IsEqual.equalTo(-508.50D));
 		Assert.assertThat(transaction.getTransactionDate(), IsEqual.equalTo((new DateTime())
 				.withTimeAtStartOfDay()
 				.withYear(2015)

@@ -10,20 +10,14 @@ import org.joda.time.DateTime;
 public class Transaction {
 	private final String accountNumber;
 	private final DateTime transactionDate;
-	private final Long chequeNumber;
-	private final String description1;
-	private final String description2;
-	private final Money cad;
-	private final Money usd;
+	private final String description;
+	private final Money amount;
 
 	private Transaction(Builder builder) {
 		accountNumber = builder.accountNumber;
 		transactionDate = builder.transactionDate;
-		chequeNumber = builder.chequeNumber;
-		description1 = builder.description1;
-		description2 = builder.description2;
-		cad = builder.cad;
-		usd = builder.usd;
+		description = builder.description;
+		amount = builder.amount;
 	}
 
 	/**
@@ -42,45 +36,17 @@ public class Transaction {
 	}
 
 	/**
-	 * @return the unique identifier of the cheque that this transaction represents.<br/>
-	 *         TODO: cheques aren't used often enough to track this information. It might be best left out.
+	 * @return A simple description for a transaction
 	 */
-	public Long getChequeNumber() {
-		return chequeNumber;
+	public String getDescription() {
+		return description;
 	}
 
 	/**
-	 * @return A simple description for a transaction. <br/>
-	 *         TODO: consider appending this to description1 and removing this field entirely
+	 * @return the amount spent or earned. This amount is signed, so both negative and positive values are supported.
 	 */
-	public String getDescription1() {
-		return description1;
-	}
-
-	/**
-	 * @return A simple description for a transaction. <br/>
-	 *         TODO: consider appending this to description1 and removing this field entirely
-	 */
-	public String getDescription2() {
-		return description2;
-	}
-
-	/**
-	 * @return the amount spent or earned in CAD. This amount is signed, so both negative and positive values are
-	 *         supported.<br/>
-	 *         TODO: consider creating a value field and using the {@link Money} type to track the currency denomination
-	 */
-	public Money getCad() {
-		return cad;
-	}
-
-	/**
-	 * @return the amount spent or earned in USD. This amount is signed, so both negative and positive values are
-	 *         supported.<br/>
-	 *         TODO: consider creating a value field and using the {@link Money} type to track the currency denomination
-	 */
-	public Money getUsd() {
-		return usd;
+	public Money getAmount() {
+		return amount;
 	}
 
 	@Override
@@ -95,11 +61,8 @@ public class Transaction {
 	public static class Builder {
 		private String accountNumber;
 		private DateTime transactionDate;
-		private Long chequeNumber;
-		private String description1;
-		private String description2;
-		private Money cad;
-		private Money usd;
+		private String description;
+		private Money amount;
 
 		/**
 		 * @param accountNumber the unique identifier of the account that was updated by this transaction
@@ -119,44 +82,19 @@ public class Transaction {
 		}
 
 		/**
-		 * @param chequeNumber the unique identifier of the cheque that this transaction represents.
+		 * @param description A simple description for a transaction.
 		 */
-		public Builder setChequeNumber(Long chequeNumber) {
-			this.chequeNumber = chequeNumber;
+		public Builder setDescription(String description) {
+			this.description = description;
 			return this;
 		}
 
 		/**
-		 * @param description1 A simple description for a transaction.
-		 */
-		public Builder setDescription1(String description1) {
-			this.description1 = description1;
-			return this;
-		}
-
-		/**
-		 * @param description2 A simple description for a transaction.
-		 */
-		public Builder setDescription2(String description2) {
-			this.description2 = description2;
-			return this;
-		}
-
-		/**
-		 * @param cad the amount spent or earned in CAD. This amount is signed, so both negative and positive values are
+		 * @param amount the amount spent or earned. This amount is signed, so both negative and positive values are
 		 *            supported.
 		 */
-		public Builder setCad(Money cad) {
-			this.cad = cad;
-			return this;
-		}
-
-		/**
-		 * @param usd the amount spent or earned in USD. This amount is signed, so both negative and positive values are
-		 *            supported.
-		 */
-		public Builder setUsd(Money usd) {
-			this.usd = usd;
+		public Builder setAmount(Money amount) {
+			this.amount = amount;
 			return this;
 		}
 
