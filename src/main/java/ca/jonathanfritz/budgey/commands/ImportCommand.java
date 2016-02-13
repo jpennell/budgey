@@ -1,6 +1,8 @@
 package ca.jonathanfritz.budgey.commands;
 
 import ca.jonathanfritz.budgey.Transaction;
+import ca.jonathanfritz.budgey.data.TransactionStore;
+import ca.jonathanfritz.budgey.data.memory.InMemoryTransactionStore;
 import ca.jonathanfritz.budgey.importer.CSVImporter;
 import ca.jonathanfritz.budgey.importer.CSVParser;
 import ca.jonathanfritz.budgey.importer.RoyalBankCSVParser;
@@ -29,8 +31,11 @@ public class ImportCommand extends Command {
 
 	private static final String ACCOUNT_KEY = "account";
 
+	private final TransactionStore transactionStore;
+
 	public ImportCommand() {
 		super("import", "Import transactions.");
+		this.transactionStore = new InMemoryTransactionStore();
 	}
 
 	@Override
@@ -86,7 +91,9 @@ public class ImportCommand extends Command {
 		final CSVImporter<CSVParser> csvImporter = new CSVImporter<>(parser);
 		final List<Transaction> transactions = csvImporter.importFile(file);
 
-		for (final Transaction t : transactions) {
+		this.transactionStore.put(transactions);
+
+		for (final Transaction t : this.transactionStore.list()) {
 			System.out.println(t.toString());
 		}
 

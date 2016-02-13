@@ -23,6 +23,13 @@ public class Transaction {
 	}
 
 	/**
+	 * @return unique transaction id
+	 */
+	public String getTransactionId() {
+		return String.format("t_%s%s%s", this.accountNumber.toLowerCase(), this.transactionDate.getMillis(), this.getOrder());
+	}
+
+	/**
 	 * @return the unique identifier of the account that was updated by this transaction
 	 */
 	public String getAccountNumber() {
