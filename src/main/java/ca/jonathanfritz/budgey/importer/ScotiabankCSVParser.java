@@ -5,6 +5,7 @@ import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
@@ -13,7 +14,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-public class ScotiabankCSVParser implements CSVParser {
+public class ScotiabankCSVParser extends AbstractCSVParser implements CSVParser {
 
 	// date format is 9/1/15
 	private final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
@@ -45,9 +46,12 @@ public class ScotiabankCSVParser implements CSVParser {
 			throw new RuntimeException("Failed to parse transaction [" + Joiner.on(",").join(fields) + "]", e);
 		}
 
+		final DateTime date = formatter.parseDateTime(fields[0]);
+
 		return Transaction.newBuilder()
 				.setAccountNumber(this.accountNumber)
-				.setTransactionDate(formatter.parseDateTime(fields[0]))
+				.setTransactionDate(date)
+				.setOrder(this.getOrderForDate(date))
 				.setDescription(fields[1].replaceAll("^\"|\"$", ""))
 				.setAmount(amount)
 				.build();

@@ -32,4 +32,26 @@ public class ScotiabankCSVParserTest {
 
 	}
 
+	@Test
+	public void orderTest() {
+
+		final String[] line1 = FieldSanitizer.sanitizeFields("9/1/15,line1,-508.50".split(","));
+		final String[] line2 = FieldSanitizer.sanitizeFields("9/2/15,line2,-508.50".split(","));
+		final String[] line3 = FieldSanitizer.sanitizeFields("9/2/15,line3,-508.50".split(","));
+		final String[] line4 = FieldSanitizer.sanitizeFields("9/3/15,line4,-508.50".split(","));
+
+		final ScotiabankCSVParser parser = new ScotiabankCSVParser(ACCOUNT_NUMBER);
+
+		final Transaction transaction1 = parser.parse(line1);
+		final Transaction transaction2 = parser.parse(line2);
+		final Transaction transaction3 = parser.parse(line3);
+		final Transaction transaction4 = parser.parse(line4);
+
+		Assert.assertThat(transaction1.getOrder(), IsEqual.equalTo(0));
+		Assert.assertThat(transaction2.getOrder(), IsEqual.equalTo(0));
+		Assert.assertThat(transaction3.getOrder(), IsEqual.equalTo(1));
+		Assert.assertThat(transaction4.getOrder(), IsEqual.equalTo(0));
+
+	}
+
 }
