@@ -11,12 +11,14 @@ public class ScotiabankCSVParserTest {
 
 	private static final String csv = "importer/csv/scotia.csv";
 
+	private static final String ACCOUNT_NUMBER = "1234";
+
 	@Test
 	public void validTransactionParsingTest() {
 
 		final String line = ClasspathLoader.load(csv);
 		final String[] fields = FieldSanitizer.sanitizeFields(line.split(","));
-		final ScotiabankCSVParser parser = new ScotiabankCSVParser();
+		final ScotiabankCSVParser parser = new ScotiabankCSVParser(ACCOUNT_NUMBER);
 		final Transaction transaction = parser.parse(fields);
 
 		Assert.assertThat(transaction.getDescription(), IsEqual.equalTo("MOVATI ATHLETIC WATERLOO WATERLOO     ON"));
@@ -26,6 +28,7 @@ public class ScotiabankCSVParserTest {
 				.withYear(2015)
 				.withMonthOfYear(9)
 				.withDayOfMonth(1)));
+		Assert.assertThat(transaction.getAccountNumber(), IsEqual.equalTo(ACCOUNT_NUMBER));
 
 	}
 

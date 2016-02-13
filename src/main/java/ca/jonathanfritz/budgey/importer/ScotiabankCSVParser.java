@@ -1,19 +1,17 @@
 package ca.jonathanfritz.budgey.importer;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
-
+import ca.jonathanfritz.budgey.Transaction;
+import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
-import ca.jonathanfritz.budgey.Transaction;
-
-import com.google.common.base.Joiner;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
 public class ScotiabankCSVParser implements CSVParser {
 
@@ -27,6 +25,12 @@ public class ScotiabankCSVParser implements CSVParser {
 	        .toFormatter();
 
 	private final NumberFormat cadFormat = NumberFormat.getNumberInstance(Locale.CANADA);
+
+	private final String accountNumber;
+
+	public ScotiabankCSVParser(final String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 
 	@Override
 	public Transaction parse(final String[] fields) {
@@ -42,6 +46,7 @@ public class ScotiabankCSVParser implements CSVParser {
 		}
 
 		return Transaction.newBuilder()
+				.setAccountNumber(this.accountNumber)
 		        .setTransactionDate(formatter.parseDateTime(fields[0]))
 		        .setDescription(fields[1].replaceAll("^\"|\"$", ""))
 		        .setAmount(amount)

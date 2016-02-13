@@ -5,14 +5,19 @@ import ca.jonathanfritz.budgey.importer.CSVImporter;
 import ca.jonathanfritz.budgey.importer.CSVParser;
 import ca.jonathanfritz.budgey.importer.RoyalBankCSVParser;
 import ca.jonathanfritz.budgey.importer.ScotiabankCSVParser;
+import com.google.common.base.Strings;
 import io.dropwizard.cli.Command;
 import io.dropwizard.setup.Bootstrap;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ImportCommand extends Command {
+
+	private final NumberFormat cadFormat = NumberFormat.getNumberInstance(Locale.CANADA);
 
 	private static final String PARSER_KEY = "parser";
 
@@ -21,6 +26,8 @@ public class ImportCommand extends Command {
 	private static final String SCOTIA_BANK_PARSER = "scotia";
 
 	private static final String FILE_KEY = "file";
+
+	private static final String ACCOUNT_KEY = "account";
 
 	public ImportCommand() {
 		super("import", "Import transactions.");
@@ -42,6 +49,11 @@ public class ImportCommand extends Command {
 				.required(true)
 				.help("The transaction file to import. [path/to/file.csv]");
 
+		subparser.addArgument(String.format("-%s", ACCOUNT_KEY.charAt(0)), String.format("--%s", ACCOUNT_KEY))
+				.dest(ACCOUNT_KEY)
+				.type(String.class)
+				.help("Account number. [path/to/file.csv]");
+
 	}
 
 	@Override
@@ -58,8 +70,17 @@ public class ImportCommand extends Command {
 				parser = new RoyalBankCSVParser();
 				break;
 			case SCOTIA_BANK_PARSER:
-				parser = new ScotiabankCSVParser();
+
+				final String account = namespace.getString(ACCOUNT_KEY);
+
+				if(Strings.isNullOrEmpty(account)) {
+					System.out.println(String.format("field: %s is required when using parser: %s", ACCOUNT_KEY, SCOTIA_BANK_PARSER));
+					return;
+				}
+
+				parser = new ScotiabankCSVParser(account);
 				break;
+
 		}
 
 		final CSVImporter<CSVParser> csvImporter = new CSVImporter<>(parser);
