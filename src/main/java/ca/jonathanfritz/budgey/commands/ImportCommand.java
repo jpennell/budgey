@@ -52,7 +52,7 @@ public class ImportCommand extends Command {
 		subparser.addArgument(String.format("-%s", ACCOUNT_KEY.charAt(0)), String.format("--%s", ACCOUNT_KEY))
 				.dest(ACCOUNT_KEY)
 				.type(String.class)
-				.help("Account number. [path/to/file.csv]");
+				.help("Account number. [1234]");
 
 	}
 
