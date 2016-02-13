@@ -17,12 +17,12 @@ public class ScotiabankCSVParser implements CSVParser {
 
 	// date format is 9/1/15
 	private final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-	        .appendMonthOfYear(1)
-	        .appendLiteral('/')
-	        .appendDayOfMonth(1)
-	        .appendLiteral('/')
-	        .appendTwoDigitYear(2000)
-	        .toFormatter();
+			.appendMonthOfYear(1)
+			.appendLiteral('/')
+			.appendDayOfMonth(1)
+			.appendLiteral('/')
+			.appendTwoDigitYear(2000)
+			.toFormatter();
 
 	private final NumberFormat cadFormat = NumberFormat.getNumberInstance(Locale.CANADA);
 
@@ -47,9 +47,9 @@ public class ScotiabankCSVParser implements CSVParser {
 
 		return Transaction.newBuilder()
 				.setAccountNumber(this.accountNumber)
-		        .setTransactionDate(formatter.parseDateTime(fields[0]))
-		        .setDescription(fields[1].replaceAll("^\"|\"$", ""))
-		        .setAmount(amount)
-		        .build();
+				.setTransactionDate(formatter.parseDateTime(fields[0]))
+				.setDescription(fields[1].replaceAll("^\"|\"$", ""))
+				.setAmount(amount)
+				.build();
 	}
 }
